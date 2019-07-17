@@ -7,10 +7,12 @@ public class Bubble : MonoBehaviour
     public Vector2[] slots = new Vector2[6];
     public float speed=0f;
     public Vector3 local_pos;
+    private GameObject[] nextGameObject=new GameObject[6];
     Rigidbody2D rg;
     GameObject parent_model;
 
     public int unicount = 1; //当前相连的同色的数量
+    public List<GameObject> uniobject;
 
     void Start()
     {
@@ -43,7 +45,6 @@ public class Bubble : MonoBehaviour
     //合并，target=>目标  source=>子簇
     private void OnCollision(GameObject target, GameObject source)
     {
-        Debug.Log("combine!!!");
         float[] distance = new float[6];
         float min_dis = 100f;
         int min_index = 0;
@@ -73,6 +74,21 @@ public class Bubble : MonoBehaviour
         //    source.transform.parent = target.transform.parent;
         //}
 
+
+    }
+
+    private void Eliminate()
+    {
+        List<Transform> list=new List<Transform>();
+        for (int i=0; i <uniobject.Count; i++)
+        {
+            if(uniobject[i].tag==gameObject.tag)
+            {
+                Debug.Log("消除邻接的球");
+                Destroy(uniobject[i]);
+            }
+            
+        }
 
     }
 
@@ -166,27 +182,40 @@ public class Bubble : MonoBehaviour
                 //rg.constraints = RigidbodyConstraints2D.FreezeAll;
                 //target.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 
+
+                //标记
+                nextGameObject[min_index] = target;
+                print(nextGameObject[min_index]);
             }
 
-                if (transform.parent == null && target.transform.parent == null)
-                {
-                    Debug.Log(name);
-                    GameObject parent = Instantiate(parent_model, transform.position, Quaternion.identity);
-                    transform.SetParent(parent.transform);
-                    target.transform.SetParent(parent.transform);
-                }
-                else if (target.transform.parent == null && transform.parent != null)
-                {
-                    target.transform.parent = transform.parent;
-                }
-                else if (target.transform.parent != null && transform.parent == null)
-                {
-                    Debug.Log("target child count " + target.transform.parent.childCount);
+            if (transform.parent == null && target.transform.parent == null)
+            {
+                Debug.Log(name);
+                GameObject parent = Instantiate(parent_model, transform.position, Quaternion.identity);
+                transform.SetParent(parent.transform);
+                target.transform.SetParent(parent.transform);
+            }
+            else if (target.transform.parent == null && transform.parent != null)
+            {
+                target.transform.parent = transform.parent;
+            }
+            else if (target.transform.parent != null && transform.parent == null)
+            {
+                Debug.Log("target child count " + target.transform.parent.childCount);
 
-                }
+            }
 
-            target.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-            rg.velocity = new Vector2(0, 0);
+            uniobject.Add(target);
+
+            if(gameObject.tag == target.tag)
+            {
+                unicount++;
+            }
+            if(unicount==3)
+            {
+                Eliminate();
+                Destroy(gameObject);
+            }
 
         }
 
