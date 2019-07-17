@@ -19,8 +19,18 @@ public class RandomSpawn : MonoBehaviour
         {
             tmp_time = spawn_cd;
             int index = Random.Range(0, 3);
-            Vector2 pos = new Vector2(Random.Range(-8f, 8f), Random.Range(-5f, 5f));
-            Instantiate(spawn_target[index], pos, Quaternion.identity);
+
+            Vector2 pos1 = new Vector2(10f, Random.Range(-5f, 5f));
+            GameObject bu = Instantiate(spawn_target[index], pos1, Quaternion.identity);
+            bu.GetComponent<move>().dir = new Vector2(Random.Range(-0.8f, -0.6f), 0);
+
+            Vector2 pos2 = new Vector2(-10f, Random.Range(-5f, 5f));
+            bu = Instantiate(spawn_target[index], pos2, Quaternion.identity);
+            bu.GetComponent<move>().dir = new Vector2(Random.Range(0.6f, 0.8f), 0);
+
+
+
+
         }
         else
             tmp_time -= Time.deltaTime;

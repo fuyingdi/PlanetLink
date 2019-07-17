@@ -11,6 +11,8 @@ public class Bubble : MonoBehaviour
     Rigidbody2D rg;
     GameObject parent_model;
 
+    public bool isCombined = false;
+
     public int unicount = 1; //当前相连的同色的数量
     public List<GameObject> uniobject;
 
@@ -99,10 +101,18 @@ public class Bubble : MonoBehaviour
         hit_point = collision.GetContact(0).point;
 
 
+
         GameObject target = collision.gameObject;
+
+        target.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        rg.velocity = new Vector2(0, 0);
 
         if (target.tag == "Bubble"|| target.tag=="BubbleA"||target.tag=="BubbleB"||target.tag=="BubbleC")
         {
+            rg.constraints = RigidbodyConstraints2D.FreezeAll;
+            target.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+
+
             Bubble bubble = target.GetComponent<Bubble>();
             #region
             ////两簇相撞时，判断合并到谁，优先按子物体数量判断，其次按速度判断
@@ -179,8 +189,8 @@ public class Bubble : MonoBehaviour
                 target.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
                 rg.velocity = new Vector2(0, 0);
 
-                //rg.constraints = RigidbodyConstraints2D.FreezeAll;
-                //target.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                rg.constraints = RigidbodyConstraints2D.FreezeAll;
+                target.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 
 
                 //标记
@@ -201,7 +211,7 @@ public class Bubble : MonoBehaviour
             }
             else if (target.transform.parent != null && transform.parent == null)
             {
-                Debug.Log("target child count " + target.transform.parent.childCount);
+                ;
 
             }
 
@@ -210,12 +220,14 @@ public class Bubble : MonoBehaviour
             if(gameObject.tag == target.tag)
             {
                 unicount++;
+                //bubble.unicount++;
             }
             if(unicount==3)
             {
                 Eliminate();
                 Destroy(gameObject);
             }
+            isCombined = true;
 
         }
 
