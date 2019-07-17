@@ -10,7 +10,7 @@ public class Bubble : MonoBehaviour
     Rigidbody2D rg;
     GameObject parent_model;
 
-    public int unicount = 1;
+    public int unicount = 1; //当前相连的同色的数量
 
     void Start()
     {
