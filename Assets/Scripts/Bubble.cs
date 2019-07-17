@@ -89,6 +89,11 @@ public class Bubble : MonoBehaviour
                 Debug.Log("消除邻接的球");
                 Destroy(uniobject[i]);
             }
+            else
+            {
+                Bubble bub = uniobject[i].gameObject.GetComponent<Bubble>();
+                bub.isCombined = false;
+            }
             
         }
 

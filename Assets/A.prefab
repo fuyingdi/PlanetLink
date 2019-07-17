@@ -608,6 +608,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   speed: 0
   local_pos: {x: 0, y: 0, z: 0}
+  isCombined: 0
   unicount: 1
   uniobject: []
 --- !u!114 &4377237965295429499
@@ -638,7 +639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cathSpeed: 5
-  upDistance: 0.5
+  upDistance: 0.7
 --- !u!1 &4377237965304943580
 GameObject:
   m_ObjectHideFlags: 0

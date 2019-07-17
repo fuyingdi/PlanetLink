@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cathSpeed: 5
-  upDistance: 0.5
+  upDistance: 0.7
 --- !u!1 &5046379032737543081
 GameObject:
   m_ObjectHideFlags: 0
