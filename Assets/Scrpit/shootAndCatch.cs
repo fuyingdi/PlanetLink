@@ -6,6 +6,7 @@ public class shootAndCatch : MonoBehaviour
 {
     public int haveCatch = 0;
     public float shootSpeed = 5;
+    public GameObject lightBody;
     private GameObject bullet;
     private void OnBecameVisible()
 
@@ -34,6 +35,8 @@ public class shootAndCatch : MonoBehaviour
                         
                         bullet = hitRayList[i].collider.gameObject;
 
+                        lightBody.SetActive(true);
+                        lightBody.GetComponent<light>().setLength((bullet.transform.position - transform.position).magnitude);
                         if (bullet.GetComponent<Bubble>().isCombined == false)
                         {
                             hitRayList[i].collider.GetComponent<starCatch>().myCatch(gameObject);

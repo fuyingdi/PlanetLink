@@ -5,7 +5,7 @@ using UnityEngine;
 public class move : MonoBehaviour
 {
     Rigidbody2D rg;
-    public float speed = 1f;
+    public float speed = 0.01f;
     public Vector2 dir;
 
     public bool flag = true;
@@ -24,7 +24,8 @@ public class move : MonoBehaviour
     void Update()
     {
         if (flag)
-            rg.velocity = dir * speed;
+            //rg.velocity = dir * speed;
+            transform.Translate(dir*speed);
         //Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         //rg.velocity = dir * speed;
     }
