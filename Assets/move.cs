@@ -16,7 +16,7 @@ public class move : MonoBehaviour
     }
     private void Awake()
     {
-        dir = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+     //   dir = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
         
     }
 
@@ -31,7 +31,7 @@ public class move : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag =="Bubble")
+        if(collision.gameObject.tag =="Bubble"|| collision.gameObject.tag == "BubbleA"|| collision.gameObject.tag == "BubbleB"|| collision.gameObject.tag == "BubbleC")
         {
             flag = false;
         }

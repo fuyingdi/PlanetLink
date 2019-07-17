@@ -5,9 +5,12 @@ using UnityEngine;
 public class Bubble : MonoBehaviour
 {
     public Vector2[] slots = new Vector2[6];
-    GameObject parent_model;
     public float speed=0f;
+    public Vector3 local_pos;
     Rigidbody2D rg;
+    GameObject parent_model;
+
+    public int unicount = 1;
 
     void Start()
     {
@@ -27,6 +30,49 @@ public class Bubble : MonoBehaviour
         }
         speed = rg.velocity.magnitude;
 
+        //每帧强制更新local坐标
+        //if (transform.parent != null)
+        //{
+        //    transform.localPosition = local_pos;
+        //}
+
+
+
+    }
+
+    //合并，target=>目标  source=>子簇
+    private void OnCollision(GameObject target, GameObject source)
+    {
+        Debug.Log("combine!!!");
+        float[] distance = new float[6];
+        float min_dis = 100f;
+        int min_index = 0;
+        for (int i = 0; i < 6; i++)
+        {
+            float tmp_dis = (new Vector2(source.transform.position.x, source.transform.position.y) - slots[i]).magnitude;
+            if (tmp_dis < min_dis)
+            {
+                min_dis = tmp_dis;
+                min_index = i;
+            }
+        }
+        // 把source放到slot位置上
+        source.transform.position = slots[min_index];
+        source.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        rg.velocity = new Vector2(0, 0);
+        
+
+        //if (target.transform.parent == null)
+        //{
+        //    GameObject parent = Instantiate(parent_model, target.transform.position, Quaternion.identity);
+        //    target.transform.SetParent(parent.transform);
+        //    target.transform.SetParent(parent.transform);
+        //}
+        //else
+        //{
+        //    source.transform.parent = target.transform.parent;
+        //}
+
 
     }
 
@@ -38,52 +84,113 @@ public class Bubble : MonoBehaviour
 
 
         GameObject target = collision.gameObject;
-        if(target.tag == "Bubble")
+
+        if (target.tag == "Bubble"|| target.tag=="BubbleA"||target.tag=="BubbleB"||target.tag=="BubbleC")
         {
             Bubble bubble = target.GetComponent<Bubble>();
-            if(speed<bubble.speed)
+            #region
+            ////两簇相撞时，判断合并到谁，优先按子物体数量判断，其次按速度判断
+            ////A B均为复数个
+            //if (transform.parent != null && target.transform.parent != null)
+            //{
+            //    if (transform.parent.childCount > target.transform.childCount)
+            //    {
+            //        //A的个数大于B的个数
+            //        //B合并在A上
+            //        OnCollision(gameObject, target);
+            //    }
+            //    else if (transform.parent.childCount < target.transform.childCount)
+            //    {
+            //        //B的个数大于A的个数
+            //        //A合并在B上
+            //        OnCollision(target, gameObject);
+            //    }
+            //    else
+            //    {
+            //        //个数相等，比较速度
+            //        if (speed < bubble.speed)
+            //        {
+            //            //A速度小于B速度
+            //            //B合并到A上
+            //            OnCollision(gameObject, target);
+            //        }
+            //        else
+            //        {
+            //            //B速度大于等于A速度
+            //            //A合并到B上
+            //            OnCollision(target, gameObject);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    //个数相等，比较速度
+            //    if (speed < bubble.speed)
+            //    {
+            //        //A速度小于B速度
+            //        //B合并到A上
+            //        OnCollision(gameObject, target);
+            //    }
+            //    else
+            //    {
+            //        //B速度大于等于A速度
+            //        //A合并到B上
+            //        OnCollision(target, gameObject);
+            //    }
+            //}
+            #endregion
+            if (speed < bubble.speed)
             {
                 float[] distance = new float[6];
                 float min_dis = 100f;
                 int min_index = 0;
-                for (int i =0; i<6; i++)
+                for (int i = 0; i < 6; i++)
                 {
                     float tmp_dis = (new Vector2(target.transform.position.x, target.transform.position.y) - slots[i]).magnitude;
-                    if(tmp_dis<min_dis)
+                    if (tmp_dis < min_dis)
                     {
                         min_dis = tmp_dis;
                         min_index = i;
                     }
                 }
                 // 把飞来的物体放到slot位置上
-                target.transform.position=slots[min_index];
+                Debug.Log("target" + target.name);
+                Debug.Log("slot index" + min_index);
+                Debug.Log("slot pos " + slots[min_index]);
+                bubble.local_pos = slots[min_index];
+                target.transform.position = slots[min_index];
+
                 target.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
                 rg.velocity = new Vector2(0, 0);
 
                 //rg.constraints = RigidbodyConstraints2D.FreezeAll;
                 //target.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 
-
-                //Debug.Log(target.name);
-                //Debug.Log(slots[min_index]);
             }
 
-            Debug.Log(gameObject.transform.parent);
-            
-            if(transform.parent == null)
-            {
-                GameObject parent = Instantiate(parent_model, transform.position, Quaternion.identity);
-                transform.SetParent(parent.transform);
-                target.transform.SetParent(parent.transform);
-            }
-            else
-            {
-                target.transform.parent = transform.parent;
-            }
+                if (transform.parent == null && target.transform.parent == null)
+                {
+                    Debug.Log(name);
+                    GameObject parent = Instantiate(parent_model, transform.position, Quaternion.identity);
+                    transform.SetParent(parent.transform);
+                    target.transform.SetParent(parent.transform);
+                }
+                else if (target.transform.parent == null && transform.parent != null)
+                {
+                    target.transform.parent = transform.parent;
+                }
+                else if (target.transform.parent != null && transform.parent == null)
+                {
+                    Debug.Log("target child count " + target.transform.parent.childCount);
 
+                }
+
+            target.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            rg.velocity = new Vector2(0, 0);
 
         }
 
-
+        
     }
 }
+

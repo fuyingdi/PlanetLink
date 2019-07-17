@@ -19,7 +19,7 @@ public class ParentMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(dir.x, dir.y, 0) * speed * 0.01f;
+        //transform.position += new Vector3(dir.x, dir.y, 0) * speed * 0.01f;
         //rg.velocity = dir * speed;
     }
 
