@@ -6,15 +6,18 @@ using UnityEngine.SceneManagement;
 public class title : MonoBehaviour
 {
     public Button start,end;
+    public AudioSource buttonDown;
     // Start is called before the first frame update 
     void Start()
     {
         start.onClick.AddListener(delegate ()
         {
-            SceneManager.LoadScene("stage", LoadSceneMode.Single);
+            buttonDown.Play();
+            SceneManager.LoadScene("test", LoadSceneMode.Single);
         });
         end.onClick.AddListener(delegate ()
         {
+            buttonDown.Play();
             Application.Quit();
         });
     }

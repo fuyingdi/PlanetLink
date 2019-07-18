@@ -703,6 +703,8 @@ MonoBehaviour:
   isCombined: 0
   unicount: 1
   uniobject: []
+  destroy_flame: {fileID: 8661583111936642896, guid: 1fe36e87b82f66d46b590edc7d85a606,
+    type: 3}
 --- !u!114 &7391592569054949749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,5 +733,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cathSpeed: 25
-  upDistance: 1
+  upDistance: 1.2
   catched: 0

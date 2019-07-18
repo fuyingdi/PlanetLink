@@ -31,9 +31,9 @@ public class shootAndCatch : MonoBehaviour
                 RaycastHit2D[] hitRayListA, hitRayListB, hitRayListC;
                 //print(transform.forward);
                 Vector2 widPos = lightWidth / 2 * transform.right;
-                hitRayListA = Physics2D.RaycastAll(new Vector2(transform.position.x+ widPos.x, transform.position.y), transform.up, maxLength);
-                hitRayListB = Physics2D.RaycastAll(new Vector2(transform.position.x-widPos.x, transform.position.y), transform.up, maxLength);
-                hitRayListC = Physics2D.RaycastAll(new Vector2(transform.position.x, transform.position.y), transform.up, maxLength);
+                hitRayListA = Physics2D.RaycastAll(new Vector2(transform.position.x+ widPos.x, transform.position.y), transform.up, maxLength+5);
+                hitRayListB = Physics2D.RaycastAll(new Vector2(transform.position.x-widPos.x, transform.position.y), transform.up, maxLength+5);
+                hitRayListC = Physics2D.RaycastAll(new Vector2(transform.position.x, transform.position.y), transform.up, maxLength+5);
                 bullet = null;
                 GameObject bulletB, bulletC;
                 for (int i = 0; i < hitRayListA.Length; i++)
@@ -72,7 +72,23 @@ public class shootAndCatch : MonoBehaviour
                     //bullet.GetComponent<Rigidbody2D>().velocity = new Vector2();
                     lightBody.SetActive(true);
                     lightBody.GetComponent<light>().setLength(maxLength);
-                    if (bullet.GetComponent<Bubble>().isCombined == false)
+                    int count = 0;
+
+                    for (int i = 0; i < 6; i++)
+                    {
+                        RaycastHit2D[] hitRayList;
+                        Vector2 toWard = new Vector2(Mathf.Cos(i * Mathf.PI / 3), Mathf.Sin(i * Mathf.PI / 3));
+                        Vector2 originPos = new Vector2(bullet.transform.position.x, bullet.transform.position.y) + bullet.GetComponent<Collider2D>().bounds.size.x * toWard;
+                        hitRayList = Physics2D.RaycastAll(originPos, toWard, 0.1f);
+                        for (int j = 0; j < hitRayList.Length; j++)
+                        {
+                            if (hitRayList[j].collider.tag == "BubbleA" || hitRayList[j].collider.tag == "BubbleB" || hitRayList[j].collider.tag == "BubbleC")
+                            {
+                                count++;
+                            }
+                        }
+                    }
+                    if (count == 0)
                     {
                         bullet.GetComponent<starCatch>().myCatch(gameObject);
                         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2();

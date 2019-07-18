@@ -12,16 +12,12 @@ public class stage : MonoBehaviour
         Time.timeScale = 1;
         restartBtn.onClick.AddListener(delegate ()
         {
-            SceneManager.LoadScene("title", LoadSceneMode.Single);
+            SceneManager.LoadScene("test", LoadSceneMode.Single);
         });
-        continueBtn.onClick.AddListener(delegate ()
-        {
-            stopMenu.SetActive(false);
-            Time.timeScale = 1;
-        });
+
         quitBtn.onClick.AddListener(delegate ()
         {
-            Application.Quit();
+            SceneManager.LoadScene("title", LoadSceneMode.Single);
         });
     }
     void Update()

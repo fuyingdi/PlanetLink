@@ -11,6 +11,8 @@ public class audioAnimaCon : MonoBehaviour
 
     public GameObject explosion;
 
+    public AudioSource planetDes;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +22,8 @@ public class audioAnimaCon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && (Time.timeScale - 0 <= 0.1f)
+)
         {
             backGroundMusic.Play();
         }
@@ -38,8 +41,11 @@ public class audioAnimaCon : MonoBehaviour
         }
 
     }
-
     public void shipExplosion(GameObject father){
         Instantiate(explosion,father.transform.position,Quaternion.identity);
+    }
+
+    public void planetDestory(){
+        planetDes.Play();
     }
 }

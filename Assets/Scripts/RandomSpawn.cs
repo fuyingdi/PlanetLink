@@ -18,7 +18,7 @@ public class RandomSpawn : MonoBehaviour
     {
         if (tmp_time <= 0)
         {
-            tmp_time = spawn_cd/(1+speedup*Time.time);
+            tmp_time = spawn_cd/(1+speedup*Time.time/5);
             int index = Random.Range(0, 3);
 
             Vector2 pos1 = new Vector2(10f, Random.Range(-4f, 4f));

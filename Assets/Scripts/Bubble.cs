@@ -15,11 +15,14 @@ public class Bubble : MonoBehaviour
 
     public int unicount = 1; //当前相连的同色的数量
     public List<GameObject> uniobject;
+    public GameObject destroy_flame;
+    public GameObject audio_control;
 
     void Start()
     {
         parent_model = GameObject.Find("parent");
         rg = GetComponent<Rigidbody2D>();
+        audio_control = GameObject.Find("GM-bgm&anima");
     }
 
     // Update is called once per frame
@@ -44,6 +47,10 @@ public class Bubble : MonoBehaviour
         {
             isOutRange = true;
             Destroy(gameObject);
+        }
+        if(uniobject.Count == 0)
+        {
+            isCombined = false;
         }
 
 
@@ -268,6 +275,8 @@ public class Bubble : MonoBehaviour
         if(!isOutRange)
         {
             Score.score.score_num += 100;
+            Instantiate(destroy_flame, transform.position, Quaternion.identity);
+            audio_control.GetComponent<audioAnimaCon>().planetDestory();
 
         }
 

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     bool canHurt=true;
     public float cantHurtTime = 5f;
     public GameObject explosion;
+    public AudioSource attacked;
     void Start()
     {
         
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
         {
             HP--;
             HPShow.GetComponent<HPControl>().decreaseHp();
+            attacked.Play();
             if(HP<=0)
             {
                 Instantiate(explosion, transform.position, Quaternion.identity);
