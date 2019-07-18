@@ -9,6 +9,7 @@ public class Bubble : MonoBehaviour
     public Vector3 local_pos;
     Rigidbody2D rg;
     GameObject parent_model;
+    bool isOutRange = false;
 
     public bool isCombined = false;
 
@@ -40,7 +41,10 @@ public class Bubble : MonoBehaviour
         //}
         if ((transform.position.x > 10f || transform.position.x < -10f || transform.position.y > 6f || transform.position.y < -6f)&&
             GetComponent<starCatch>().catched==false)
+        {
+            isOutRange = true;
             Destroy(gameObject);
+        }
 
 
 
@@ -261,7 +265,11 @@ public class Bubble : MonoBehaviour
 
     private void OnDestroy()
     {
-        Score.score.score_num += 100;
+        if(!isOutRange)
+        {
+            Score.score.score_num += 100;
+
+        }
 
         foreach (GameObject o in uniobject)
         {
