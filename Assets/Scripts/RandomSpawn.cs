@@ -21,21 +21,32 @@ public class RandomSpawn : MonoBehaviour
             int index = Random.Range(0, 3);
 
             Vector2 pos1 = new Vector2(10f, Random.Range(-5f, 5f));
-            Debug.DrawLine(pos1, pos1);
-            if (Physics2D.OverlapCircle(pos1, 1f) == null)
+            Vector2 pos2 = new Vector2(-10f, Random.Range(-5f, 5f));
+            Vector2 pos3 = new Vector2(Random.Range(-8f,8f), 6f);
+            Vector2 pos4 = new Vector2(Random.Range(-8f, 8f), -6f);
+            GameObject bu;
+
+            int rand = Random.Range(0, 4);
+            switch (rand)
             {
-                GameObject bu = Instantiate(spawn_target[index], pos1, Quaternion.identity);
-                bu.GetComponent<move>().dir = new Vector2(Random.Range(-0.8f, -0.6f), 0);
+                case 0:
+                    bu = Instantiate(spawn_target[index], pos1, Quaternion.identity);
+                    bu.GetComponent<move>().dir = new Vector2(Random.Range(-0.8f, -0.6f), 0);
+                    break;
+                case 1:
+                    bu = Instantiate(spawn_target[index], pos2, Quaternion.identity);
+                    bu.GetComponent<move>().dir = new Vector2(Random.Range(0.6f, 0.8f), 0);
+                    break;
+                case 2:
+                    bu = Instantiate(spawn_target[index], pos3, Quaternion.identity);
+                    bu.GetComponent<move>().dir = new Vector2(0,Random.Range(-0.8f, 0.6f));
+                    break;
+                case 3:
+                    bu = Instantiate(spawn_target[index], pos4, Quaternion.identity);
+                    bu.GetComponent<move>().dir = new Vector2(0, Random.Range(0.6f, 0.8f));
+                    break;
+
             }
-
-            if (Physics2D.OverlapCircle(transform.position, 1f) == null)
-            {
-                Vector2 pos2 = new Vector2(-10f, Random.Range(-5f, 5f));
-                GameObject bu = Instantiate(spawn_target[index], pos2, Quaternion.identity);
-                bu.GetComponent<move>().dir = new Vector2(Random.Range(0.6f, 0.8f), 0);
-            }
-
-
 
 
         }

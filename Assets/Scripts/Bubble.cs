@@ -260,7 +260,9 @@ public class Bubble : MonoBehaviour
 
     private void OnDestroy()
     {
-        foreach(GameObject o in uniobject)
+        Score.score.score_num += 100;
+
+        foreach (GameObject o in uniobject)
         {
             Bubble bub = o.GetComponent<Bubble>();
             bub.uniobject.Remove(gameObject);

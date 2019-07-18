@@ -57,13 +57,14 @@ public class PlayerMove : MonoBehaviour
 
     public void playerTurn()    //转向
     {
+        //this.transform.Rotate(new Vector3(0, 0, -Input.GetAxis("Horizontal")) * turnSpeed);
         if (Input.GetKey(KeyCode.A))
         {
-            this.transform.Rotate(new Vector3(0, 0, 1) * turnSpeed);
+            this.transform.Rotate(new Vector3(0, 0, -Input.GetAxis("Horizontal")) * turnSpeed);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            this.transform.Rotate(new Vector3(0, 0, -1) * turnSpeed);
+            this.transform.Rotate(new Vector3(0, 0, -Input.GetAxis("Horizontal")) * turnSpeed);
         }
     }
 

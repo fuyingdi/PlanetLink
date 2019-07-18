@@ -7,6 +7,8 @@ public class shootAndCatch : MonoBehaviour
     public int haveCatch = 0;
     public float shootSpeed = 5;
     public float lightWidth = 0.08f;
+    public float alpha = 0.5f;
+    public float maxLength = 8.0f;
     public GameObject lightBody;
     private GameObject bullet;
     private void OnBecameVisible()
@@ -27,16 +29,16 @@ public class shootAndCatch : MonoBehaviour
             if (haveCatch == 0)
             {
                 RaycastHit2D[] hitRayListA, hitRayListB, hitRayListC;
-                print(transform.forward);
+                //print(transform.forward);
                 Vector2 widPos = lightWidth / 2 * transform.right;
-                hitRayListA = Physics2D.RaycastAll(new Vector2(transform.position.x + widPos.x, transform.position.y), transform.up, 100);
-                hitRayListB = Physics2D.RaycastAll(new Vector2(transform.position.x - widPos.x, transform.position.y), transform.up, 100);
-                hitRayListC = Physics2D.RaycastAll(new Vector2(transform.position.x, transform.position.y), transform.up, 100);
+                hitRayListA = Physics2D.RaycastAll(new Vector2(transform.position.x+ widPos.x, transform.position.y), transform.up, maxLength);
+                hitRayListB = Physics2D.RaycastAll(new Vector2(transform.position.x-widPos.x, transform.position.y), transform.up, maxLength);
+                hitRayListC = Physics2D.RaycastAll(new Vector2(transform.position.x, transform.position.y), transform.up, maxLength);
                 bullet = null;
                 GameObject bulletB, bulletC;
                 for (int i = 0; i < hitRayListA.Length; i++)
                 {
-                    if (hitRayListA[i].collider.tag == "BubbleA" || hitRayListA[i].collider.tag == "BubbleB" || hitRayListA[i].collider.tag == "BubbleC")
+                    if (hitRayListA[i].collider.tag == "BubbleA"|| hitRayListA[i].collider.tag=="BubbleB"|| hitRayListA[i].collider.tag == "BubbleC")
                     {
                         bullet = hitRayListA[i].collider.gameObject;
                         break;
@@ -47,12 +49,11 @@ public class shootAndCatch : MonoBehaviour
                     if (hitRayListB[i].collider.tag == "BubbleA" || hitRayListB[i].collider.tag == "BubbleB" || hitRayListB[i].collider.tag == "BubbleC")
                     {
                         bulletB = hitRayListB[i].collider.gameObject;
-                        if (bullet == null || (bullet.transform.position - transform.position).magnitude > (bulletB.transform.position - transform.position).magnitude)
-                        {
+                        if (bullet == null|| (bullet.transform.position-transform.position).magnitude> (bulletB.transform.position - transform.position).magnitude) {
                             bullet = bulletB;
                         }
                         break;
-                    }
+                    }                
                 }
                 for (int i = 0; i < hitRayListC.Length; i++)
                 {
@@ -66,12 +67,11 @@ public class shootAndCatch : MonoBehaviour
                         break;
                     }
                 }
-                if (bullet != null)
-                {
+                if (bullet != null) {
                     //bullet.GetComponent<starCatch>().myCatch(gameObject);
                     //bullet.GetComponent<Rigidbody2D>().velocity = new Vector2();
                     lightBody.SetActive(true);
-                    lightBody.GetComponent<light>().setLength((bullet.transform.position - transform.position).magnitude);
+                    lightBody.GetComponent<light>().setLength(maxLength);
                     if (bullet.GetComponent<Bubble>().isCombined == false)
                     {
                         bullet.GetComponent<starCatch>().myCatch(gameObject);
@@ -79,6 +79,10 @@ public class shootAndCatch : MonoBehaviour
                         bullet.GetComponent<move>().flag = false;
                         haveCatch = 1;
                     }
+                }
+                else{
+                    lightBody.SetActive(true);
+                    lightBody.GetComponent<light>().setLength(maxLength, alpha);
                 }
             }
             else if (haveCatch == 2)
