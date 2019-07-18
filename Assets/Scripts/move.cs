@@ -25,9 +25,9 @@ public class move : MonoBehaviour
     {
         if (flag)
             //rg.velocity = dir * speed;
-            transform.Translate(dir*speed);
+            //transform.Translate(dir*speed);
         //Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        //rg.velocity = dir * speed;
+        rg.velocity = dir * speed;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

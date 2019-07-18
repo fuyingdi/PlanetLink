@@ -7,7 +7,6 @@ public class Bubble : MonoBehaviour
     public Vector2[] slots = new Vector2[6];
     public float speed=0f;
     public Vector3 local_pos;
-    private GameObject[] nextGameObject=new GameObject[6];
     Rigidbody2D rg;
     GameObject parent_model;
 
@@ -39,6 +38,8 @@ public class Bubble : MonoBehaviour
         //{
         //    transform.localPosition = local_pos;
         //}
+        if (transform.position.x > 10f || transform.position.x < -10f || transform.position.y > 6f || transform.position.y < -6f)
+            Destroy(gameObject);
 
 
 
@@ -91,8 +92,27 @@ public class Bubble : MonoBehaviour
             }
             else
             {
-                Bubble bub = uniobject[i].gameObject.GetComponent<Bubble>();
-                bub.isCombined = false;
+                GameObject obj = uniobject[i].gameObject;
+                Bubble bub = obj.GetComponent<Bubble>();
+                //如果炸出来的是单个的
+                if(bub.uniobject.Count==0)
+                {
+                    bub.isCombined = false;
+                    GameObject tmp = obj.transform.parent.gameObject;
+                    obj.transform.parent = null;
+                    Destroy(tmp);
+                }
+                //如果炸出来的是一组的
+                else
+                {
+                    GameObject tmp = obj.transform.parent.gameObject;
+                    obj.transform.parent = Instantiate(parent_model, transform.position, Quaternion.identity).transform;
+                    foreach(GameObject o in bub.uniobject)
+                    {
+                        o.transform.parent = obj.transform.parent;
+                    }
+                    Destroy(tmp);
+                }
             }
             
         }
@@ -114,9 +134,6 @@ public class Bubble : MonoBehaviour
 
         if (target.tag == "Bubble"|| target.tag=="BubbleA"||target.tag=="BubbleB"||target.tag=="BubbleC")
         {
-            rg.constraints = RigidbodyConstraints2D.FreezeAll;
-            target.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-
 
             Bubble bubble = target.GetComponent<Bubble>();
             #region
@@ -190,6 +207,7 @@ public class Bubble : MonoBehaviour
                 Debug.Log("slot pos " + slots[min_index]);
                 bubble.local_pos = slots[min_index];
                 target.transform.position = slots[min_index];
+                Debug.Log("target pos" + target.transform.position);
 
                 target.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
                 rg.velocity = new Vector2(0, 0);
@@ -198,11 +216,10 @@ public class Bubble : MonoBehaviour
                 target.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 
 
-                //标记
-                nextGameObject[min_index] = target;
-                print(nextGameObject[min_index]);
             }
 
+
+            //分组，设置父物体
             if (transform.parent == null && target.transform.parent == null)
             {
                 Debug.Log(name);
@@ -216,7 +233,9 @@ public class Bubble : MonoBehaviour
             }
             else if (target.transform.parent != null && transform.parent == null)
             {
-                ;
+                target.transform.parent.GetComponent<ParentMove>().speed = -target.transform.parent.GetComponent<ParentMove>().speed;
+               // transform.parent.GetComponent<move>().speed = -transform.parent.GetComponent<move>().speed;
+
 
             }
 
@@ -227,7 +246,7 @@ public class Bubble : MonoBehaviour
                 unicount++;
                 //bubble.unicount++;
             }
-            if(unicount==3)
+            if(unicount>=3)
             {
                 Eliminate();
                 Destroy(gameObject);
@@ -237,6 +256,15 @@ public class Bubble : MonoBehaviour
         }
 
         
+    }
+
+    private void OnDestroy()
+    {
+        foreach(GameObject o in uniobject)
+        {
+            Bubble bub = o.GetComponent<Bubble>();
+            bub.uniobject.Remove(gameObject);
+        }
     }
 }
 
