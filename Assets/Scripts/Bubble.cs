@@ -38,7 +38,8 @@ public class Bubble : MonoBehaviour
         //{
         //    transform.localPosition = local_pos;
         //}
-        if (transform.position.x > 10f || transform.position.x < -10f || transform.position.y > 6f || transform.position.y < -6f)
+        if ((transform.position.x > 10f || transform.position.x < -10f || transform.position.y > 6f || transform.position.y < -6f)&&
+            GetComponent<starCatch>().catched==false)
             Destroy(gameObject);
 
 

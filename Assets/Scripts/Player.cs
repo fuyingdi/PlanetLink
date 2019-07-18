@@ -6,11 +6,12 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
-    public int HP=5;
+    public int HP=3;
     //public Text HPText;
     public GameObject HPShow;
     bool canHurt=true;
     public float cantHurtTime = 5f;
+    public GameObject explosion;
     void Start()
     {
         
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour
             HPShow.GetComponent<HPControl>().decreaseHp();
             if(HP<=0)
             {
-                
+                Instantiate(explosion, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }
             canHurt = false;

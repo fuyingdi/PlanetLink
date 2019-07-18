@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1567834039637247110}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.57, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children:
   - {fileID: 4358963963369885237}
   - {fileID: 1687785150284475551}
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cathSpeed: 25
-  upDistance: 0.7
+  upDistance: 1
   catched: 0
 --- !u!1 &5046379032737543081
 GameObject:
